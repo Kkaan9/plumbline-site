@@ -1,52 +1,61 @@
 <title>Plumbline</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&family=Zilla+Slab:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&family=Zilla+Slab:wght@500;600;700&display=swap">
 
 <style>
   :root {
     --ground: #edeee9;
-    --surface: #f7f8f4;
+    --surface: #f8f9f5;
+    --sunk: #e4e6e0;
     --ink: #15181a;
     --ink-soft: #4c5457;
-    --rule: #c8ccc3;
+    --ink-faint: #79817f;
+    --rule: #c9ccc3;
     --accent: #17558c;
-    --brass: #96762f;
-    --shadow: rgba(21, 24, 26, 0.08);
+    --brass: #8a6c26;
+    --clay: #9c4a34;
+    --shadow: rgba(21, 24, 26, 0.07);
 
+    --step-00: 0.82rem;
     --step-0: 1rem;
-    --step-1: 1.2rem;
-    --step-2: 1.55rem;
-    --step-3: 2.3rem;
-    --step-4: clamp(3rem, 9vw, 5.5rem);
+    --step-1: 1.18rem;
+    --step-2: 1.5rem;
+    --step-3: 2.15rem;
+    --step-4: clamp(3.2rem, 10vw, 6.5rem);
 
-    --spine: 2px;
     color-scheme: light;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #101315;
-      --surface: #171b1e;
-      --ink: #e7eae6;
-      --ink-soft: #98a09e;
-      --rule: #2b3135;
+      --ground: #0f1214;
+      --surface: #161a1d;
+      --sunk: #121517;
+      --ink: #e8ebe7;
+      --ink-soft: #9aa2a0;
+      --ink-faint: #6d7573;
+      --rule: #2a3034;
       --accent: #6cb0e6;
       --brass: #c6a35a;
-      --shadow: rgba(0, 0, 0, 0.5);
+      --clay: #d98b70;
+      --shadow: rgba(0, 0, 0, 0.45);
       color-scheme: dark;
     }
   }
 
   :root[data-theme="dark"] {
-    --ground: #101315;
-    --surface: #171b1e;
-    --ink: #e7eae6;
-    --ink-soft: #98a09e;
-    --rule: #2b3135;
+    --ground: #0f1214;
+    --surface: #161a1d;
+    --sunk: #121517;
+    --ink: #e8ebe7;
+    --ink-soft: #9aa2a0;
+    --ink-faint: #6d7573;
+    --rule: #2a3034;
     --accent: #6cb0e6;
     --brass: #c6a35a;
-    --shadow: rgba(0, 0, 0, 0.5);
+    --clay: #d98b70;
+    --shadow: rgba(0, 0, 0, 0.45);
     color-scheme: dark;
   }
 
@@ -58,184 +67,245 @@
     color: var(--ink);
     font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
     font-size: var(--step-0);
-    line-height: 1.6;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
   }
 
   .page {
-    max-width: 62rem;
+    max-width: 68rem;
     margin: 0 auto;
-    padding: 0 1.5rem 6rem;
+    padding: 0 1.5rem 5rem;
     position: relative;
   }
 
-  /* The spine is the plumb line itself: everything on the page hangs off it. */
+  /* The plumb line itself. Every band on the page hangs off it. */
   .spine {
     position: absolute;
     top: 0;
-    bottom: 0;
+    bottom: 8rem;
     left: 1.5rem;
-    width: var(--spine);
-    background: linear-gradient(to bottom, var(--brass), var(--rule) 40%, transparent);
+    width: 2px;
+    background: linear-gradient(to bottom, var(--brass) 0 22rem, var(--rule) 22rem, var(--rule) 78%, transparent);
     pointer-events: none;
   }
 
   .bob {
     position: absolute;
     left: calc(1.5rem - 7px);
-    top: 19rem;
+    top: 22rem;
     width: 16px;
-    height: 30px;
+    height: 29px;
     background: var(--brass);
     clip-path: polygon(50% 0, 100% 22%, 100% 62%, 50% 100%, 0 62%, 0 22%);
-    transform-origin: 50% -19rem;
-    animation: settle 3.4s cubic-bezier(0.33, 0, 0.2, 1) 1;
+    transform-origin: 50% -22rem;
+    animation: settle 3.6s cubic-bezier(0.32, 0, 0.18, 1) 1;
   }
 
   @keyframes settle {
-    0%   { transform: rotate(3.2deg); }
-    35%  { transform: rotate(-1.8deg); }
-    62%  { transform: rotate(0.9deg); }
-    82%  { transform: rotate(-0.35deg); }
+    0%   { transform: rotate(2.8deg); }
+    34%  { transform: rotate(-1.6deg); }
+    60%  { transform: rotate(0.8deg); }
+    81%  { transform: rotate(-0.3deg); }
     100% { transform: rotate(0); }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .bob { animation: none; }
+  @media (prefers-reduced-motion: reduce) { .bob { animation: none; } }
+
+  .content { padding-left: 3.5rem; }
+
+  .eyebrow {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: var(--step-00);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 1.4rem;
   }
 
-  .content { padding-left: 3.25rem; }
-
-  header { padding: 7rem 0 5.5rem; }
+  header { padding: 6.5rem 0 4rem; }
 
   .wordmark {
     font-family: "Zilla Slab", Georgia, serif;
     font-weight: 700;
     font-size: var(--step-4);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
+    line-height: 0.92;
+    letter-spacing: -0.025em;
     margin: 0;
-    text-wrap: balance;
   }
 
   .wordmark span { color: var(--brass); }
 
   .tagline {
+    font-family: "Zilla Slab", Georgia, serif;
+    font-weight: 500;
     font-size: var(--step-2);
-    line-height: 1.35;
-    max-width: 26ch;
-    margin: 1.75rem 0 0;
-    color: var(--ink);
+    line-height: 1.4;
+    max-width: 30ch;
+    margin: 1.9rem 0 0;
+    color: var(--ink-soft);
     text-wrap: balance;
   }
 
-  .eyebrow {
-    font-family: "Spline Sans Mono", ui-monospace, monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin: 0 0 1.5rem;
-  }
-
-  section { padding: 3.5rem 0; border-top: 1px solid var(--rule); }
+  section { padding: 4rem 0; border-top: 1px solid var(--rule); }
 
   h2 {
     font-family: "Zilla Slab", Georgia, serif;
     font-weight: 600;
     font-size: var(--step-3);
-    margin: 0 0 1.5rem;
-    letter-spacing: -0.01em;
+    margin: 0 0 0.6rem;
+    letter-spacing: -0.015em;
     text-wrap: balance;
   }
 
+  .lede { font-size: var(--step-1); color: var(--ink-soft); max-width: 58ch; margin: 0 0 2.5rem; }
+
   p { max-width: 62ch; }
 
-  .product {
+  /* The panel: the tool's own output, set as the centrepiece rather than described. */
+  .panel {
     background: var(--surface);
     border: 1px solid var(--rule);
-    border-left: 3px solid var(--accent);
-    padding: 2rem 2rem 1.75rem;
-    box-shadow: 0 1px 2px var(--shadow);
+    box-shadow: 0 1px 3px var(--shadow);
+    margin-left: -3.5rem;
   }
 
-  .product h3 {
-    font-family: "Zilla Slab", Georgia, serif;
-    font-size: var(--step-2);
-    font-weight: 600;
-    margin: 0 0 0.35rem;
-  }
-
-  .status {
+  .panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    align-items: baseline;
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--sunk);
     font-family: "Spline Sans Mono", ui-monospace, monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 1.25rem;
+    font-size: var(--step-00);
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
   }
 
-  .verdicts {
+  .panel-head b { color: var(--ink); font-weight: 500; }
+
+  .row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-    margin: 1.75rem 0 0;
-    list-style: none;
-    padding: 0;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0 1rem;
+    padding: 0.95rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
   }
 
-  .verdicts li {
-    background: var(--surface);
-    padding: 1.1rem 1.25rem;
-  }
+  .row:last-child { border-bottom: 0; }
 
-  .verdicts dt {
+  .size {
     font-family: "Spline Sans Mono", ui-monospace, monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.4rem;
+    font-size: var(--step-00);
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    padding-top: 0.15rem;
   }
 
-  .verdicts dd { margin: 0; font-size: 0.95rem; color: var(--ink-soft); line-height: 1.5; }
+  .path {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 0.9rem;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
 
-  .principles { list-style: none; padding: 0; margin: 0; display: grid; gap: 2.25rem; }
+  .chip {
+    display: inline-block;
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid currentColor;
+    margin-right: 0.55rem;
+    vertical-align: 0.1em;
+  }
 
-  .principles h3 {
+  .in-use { color: var(--accent); }
+  .review { color: var(--brass); }
+  .unused { color: var(--clay); }
+
+  .why {
+    grid-column: 2;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+    margin: 0.3rem 0 0;
+    max-width: 58ch;
+  }
+
+  .panel-foot {
+    padding: 1rem 1.5rem;
+    background: var(--sunk);
+    border-top: 1px solid var(--rule);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .panel-foot strong { color: var(--ink); font-weight: 500; }
+
+  .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2.5rem; }
+
+  .columns h3 {
     font-family: "Zilla Slab", Georgia, serif;
     font-size: var(--step-1);
     font-weight: 600;
     margin: 0 0 0.5rem;
   }
 
-  .principles p { margin: 0; color: var(--ink-soft); }
+  .columns p { margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
 
-  .rule-number {
+  .marker {
     font-family: "Spline Sans Mono", ui-monospace, monospace;
-    font-size: 0.78rem;
+    font-size: var(--step-00);
     color: var(--brass);
     letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.5rem;
   }
+
+  .limits { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; max-width: 62ch; }
+
+  .limits li {
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--ink-soft);
+  }
+
+  .limits li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.7rem;
+    height: 1px;
+    background: var(--clay);
+  }
+
+  .limits b { color: var(--ink); font-weight: 500; }
 
   footer {
     padding: 3.5rem 0 0;
     border-top: 1px solid var(--rule);
-    color: var(--ink-soft);
+    color: var(--ink-faint);
     font-size: 0.92rem;
   }
 
-  footer p { margin: 0 0 0.65rem; }
+  footer p { margin: 0 0 0.6rem; max-width: 58ch; }
 
   a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
   a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  @media (max-width: 40rem) {
+  @media (max-width: 46rem) {
     .content { padding-left: 2rem; }
-    .bob { top: 15rem; transform-origin: 50% -15rem; }
-    header { padding: 4.5rem 0 3.5rem; }
+    .panel { margin-left: -2rem; }
+    .bob { top: 17rem; transform-origin: 50% -17rem; }
+    .spine { background: linear-gradient(to bottom, var(--brass) 0 17rem, var(--rule) 17rem, var(--rule) 78%, transparent); }
+    header { padding: 4.5rem 0 3rem; }
+    .row { grid-template-columns: 1fr; }
+    .size { text-align: left; }
+    .why { grid-column: 1; }
   }
 </style>
 
@@ -251,88 +321,105 @@
     </header>
 
     <section>
-      <h2>What we make</h2>
+      <h2>Three answers, not two</h2>
+      <p class="lede">
+        Every tool that finds unused assets sorts them into used and unused. Unity can load an
+        asset from a string, though — a resource path, a shader name, an addressable key — and
+        those leave no trail to follow. Sorting them anyway is how people delete live content.
+        So Asset Audit reports what it cannot prove, and says why.
+      </p>
 
-      <div class="product">
-        <h3>Asset Audit</h3>
-        <p class="status">Coming to the Unity Asset Store</p>
-        <p>
-          Unity projects collect assets nothing points at any more: textures from a pack imported
-          for one prop, audio that got replaced, models from an experiment. They ship with the
-          build and slow down every import. Asset Audit finds them.
-        </p>
-        <p>
-          It will not call an asset dead unless it can prove it. Unity can load an asset from a
-          string — <em>Resources.Load</em>, <em>Shader.Find</em>, an addressable key — leaving no
-          trail to follow. A tool that ignores that reports those assets as unused, and people
-          delete live content. So there are three answers here, not two.
-        </p>
+      <div class="panel">
+        <div class="panel-head">
+          <span><b>Asset Audit</b></span>
+          <span>1,284 assets scanned in 0.9 s</span>
+          <span>reclaimable <b>117 MB</b></span>
+        </div>
 
-        <ul class="verdicts">
-          <li>
-            <dl>
-              <dt>In use</dt>
-              <dd>Something reaches it. Cannot be selected for removal.</dd>
-            </dl>
-          </li>
-          <li>
-            <dl>
-              <dt>Needs review</dt>
-              <dd>It might be dead, but that cannot be proven. Your call, with the reason shown.</dd>
-            </dl>
-          </li>
-          <li>
-            <dl>
-              <dt>Unused</dt>
-              <dd>Nothing in the project reaches it. Safe to remove.</dd>
-            </dl>
-          </li>
-        </ul>
+        <div class="row">
+          <div class="size">1.4 MB</div>
+          <div class="path"><span class="chip in-use">In use</span>Assets/Art/Characters/Hero.png</div>
+          <p class="why">Reachable from the build root set.</p>
+        </div>
+
+        <div class="row">
+          <div class="size">4.1 MB</div>
+          <div class="path"><span class="chip in-use">In use</span>Assets/Scenes/Harbour/Lightmap-0_comp_light.exr</div>
+          <p class="why">Baked beside a scene that is in the build; lighting follows its scene.</p>
+        </div>
+
+        <div class="row">
+          <div class="size">31 KB</div>
+          <div class="path"><span class="chip review">Needs review</span>Assets/Scripts/CrateSpawner.cs</div>
+          <p class="why">A script can be reached from code alone, which no static scan can rule out.</p>
+        </div>
+
+        <div class="row">
+          <div class="size">280 KB</div>
+          <div class="path"><span class="chip review">Needs review</span>Assets/Shaders/Water/Foam.shader</div>
+          <p class="why">Shaders can be resolved by name at runtime via Shader.Find.</p>
+        </div>
+
+        <div class="row">
+          <div class="size">3.5 MB</div>
+          <div class="path"><span class="chip review">Needs review</span>Assets/ReferenceImages/Linear/main_menu.png</div>
+          <p class="why">Its name appears in a string literal, so code may load it by name or path.</p>
+        </div>
+
+        <div class="row">
+          <div class="size">9.4 MB</div>
+          <div class="path"><span class="chip unused">Unused</span>Assets/Audio/Water/ShoreRocks.wav</div>
+          <p class="why">No reference reaches this asset from any root.</p>
+        </div>
+
+        <div class="panel-foot">
+          Removing an asset <strong>moves</strong> it out of the project with its .meta file and a
+          manifest, so undoing a cleanup is a move back rather than a recovery. Exactly one
+          action deletes anything for good, and it says so before you take it.
+        </div>
       </div>
     </section>
 
     <section>
-      <h2>How we build</h2>
+      <h2>What it will not do</h2>
+      <p class="lede">
+        Stated here because a tool that hides its limits is worse than one that has them.
+      </p>
 
-      <ol class="principles">
-        <li>
-          <p class="rule-number">01</p>
+      <ul class="limits">
+        <li><b>Follow a name assembled at runtime.</b> If your code builds a path out of pieces, nothing links the code to the asset. That is what the ignore list is for.</li>
+        <li><b>Judge sub-assets.</b> Verdicts are per file. A sprite sheet where one sprite is used counts as in use, whole.</li>
+        <li><b>Know what your team is about to need.</b> The audit describes today's project, not next sprint's.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>How we build</h2>
+      <p class="lede">Three rules, held to across everything here.</p>
+
+      <div class="columns">
+        <div>
+          <span class="marker">Rule 01</span>
           <h3>Prove it, or say you cannot</h3>
-          <p>
-            An honest maybe is worth more than a confident wrong answer. Where the evidence runs
-            out, the tool says so and hands the decision back, rather than rounding uncertainty
-            down to a delete button.
-          </p>
-        </li>
-        <li>
-          <p class="rule-number">02</p>
+          <p>An honest maybe is worth more than a confident wrong answer. Where the evidence runs out, the tool hands the decision back instead of rounding uncertainty down to a delete button.</p>
+        </div>
+        <div>
+          <span class="marker">Rule 02</span>
           <h3>Every answer carries its reason</h3>
-          <p>
-            A verdict without a reason asks for faith. Each finding states the rule that produced
-            it, so you can disagree with the tool on the evidence instead of on trust.
-          </p>
-        </li>
-        <li>
-          <p class="rule-number">03</p>
-          <h3>One irreversible step, clearly marked</h3>
-          <p>
-            Removing assets moves them aside with a manifest, so undoing is a move back rather
-            than a recovery. Exactly one action deletes anything for good, and it says so before
-            you take it.
-          </p>
-        </li>
-      </ol>
+          <p>A verdict without a reason asks for faith. Each finding states the rule that produced it, so you can disagree on the evidence rather than on trust.</p>
+        </div>
+        <div>
+          <span class="marker">Rule 03</span>
+          <h3>One irreversible step, marked</h3>
+          <p>Everything is undoable except one action, and that one announces itself. Nobody should discover which button was the permanent one afterwards.</p>
+        </div>
+      </div>
     </section>
 
     <footer>
-      <p>Plumbline is a one-person studio. Built and maintained by Kaan Açar.</p>
-      <p>
-        Contact: <a href="mailto:plumlineunity@gmail.com">plumlineunity@gmail.com</a>
-      </p>
-      <p>
-        Software here is written with the assistance of AI tooling, reviewed and tested by hand
-        before release.
-      </p>
+      <p>Plumbline is a one-person studio, built and maintained by Kaan Açar. Asset Audit is coming to the Unity Asset Store.</p>
+      <p>Contact: <a href="mailto:plumlineunity@gmail.com">plumlineunity@gmail.com</a></p>
+      <p>Software here is written with the assistance of AI tooling, then reviewed and tested by hand before release.</p>
     </footer>
   </div>
 </div>
