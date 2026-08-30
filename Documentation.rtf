@@ -1,0 +1,114 @@
+{\rtf1\ansi\ansicpg1252\deff0
+{\fonttbl{\f0\fswiss Segoe UI;}{\f1\fmodern Consolas;}}
+{\colortbl;\red21\green24\blue26;\red23\green85\blue140;\red120\green100\blue40;}
+\viewkind4\uc1\pard\sa180\sl276\slmult1\f0\fs22\cf1
+
+{\pard\sa120\fs44\b Asset Audit\b0\par}
+{\pard\sa300\fs24\cf3 User guide, version 1.0.0\cf1\par}
+
+{\pard\sa120\fs32\b Contents\b0\par}
+\pard\sa60\fi-360\li360 1.\tab What Asset Audit does\par
+\pard\sa60\fi-360\li360 2.\tab Requirements\par
+\pard\sa60\fi-360\li360 3.\tab Installation\par
+\pard\sa60\fi-360\li360 4.\tab Quick start\par
+\pard\sa60\fi-360\li360 5.\tab Trying it on sample content\par
+\pard\sa60\fi-360\li360 6.\tab Reading the results\par
+\pard\sa60\fi-360\li360 7.\tab Removing assets\par
+\pard\sa60\fi-360\li360 8.\tab Restoring a batch\par
+\pard\sa60\fi-360\li360 9.\tab Discarding a batch\par
+\pard\sa60\fi-360\li360 10.\tab The ignore list\par
+\pard\sa60\fi-360\li360 11.\tab Other findings\par
+\pard\sa60\fi-360\li360 12.\tab What Asset Audit cannot know\par
+\pard\sa60\fi-360\li360 13.\tab Frequently asked questions\par
+\pard\sa300\fi-360\li360 14.\tab Support\par
+
+\pard\sa180\sl276\slmult1
+
+{\pard\sa120\fs32\b 1. What Asset Audit does\b0\par}
+Unity projects collect assets that nothing points at any more: textures from a pack imported for one prop, audio that was replaced, models from an experiment. They ship with the build and they slow down every import. Asset Audit finds them.\par
+It is built around one rule. It will not tell you an asset is dead unless it can prove it. Anything it cannot prove goes to a review pile for you to judge, rather than onto a delete list. That is why it reports three verdicts instead of two.\par
+
+{\pard\sa120\fs32\b 2. Requirements\b0\par}
+Unity 2022.3 LTS or newer. Tested on Unity 2022.3 and Unity 6.\par
+Any render pipeline. Asset Audit does not touch rendering.\par
+Editor only. Nothing from this package is included in a build.\par
+
+{\pard\sa120\fs32\b 3. Installation\b0\par}
+\pard\sa60\fi-360\li360 1.\tab Import the package into your project.\par
+\pard\sa60\fi-360\li360 2.\tab All files are placed in a single folder, by default {\f1 Assets/AssetAudit}. You may move or rename that folder; the tool finds itself.\par
+\pard\sa180\fi-360\li360 3.\tab No further setup is required. There is nothing to configure and no scene to prepare.\par
+\pard\sa180\sl276\slmult1
+
+{\pard\sa120\fs32\b 4. Quick start\b0\par}
+\pard\sa60\fi-360\li360 1.\tab Open {\b Window > Asset Audit}.\par
+\pard\sa60\fi-360\li360 2.\tab Press {\b Scan project}.\par
+\pard\sa180\fi-360\li360 3.\tab Work through the three sections that appear. Each row shows the asset size, its path, and the reason for its verdict.\par
+\pard\sa180\sl276\slmult1
+A scan reads what is saved on disk. If a scene has unsaved changes, Asset Audit stops and offers to save first, because an asset you have just dropped into an unsaved scene would otherwise look unused.\par
+
+{\pard\sa120\fs32\b 5. Trying it on sample content\b0\par}
+Before running Asset Audit on a real project, you can see exactly what its verdicts mean.\par
+\pard\sa60\fi-360\li360 1.\tab Open {\b Window > Asset Audit Sample > Create}.\par
+\pard\sa60\fi-360\li360 2.\tab Six files are written to {\f1 Assets/AssetAuditSample}, one for each verdict and each reason worth understanding.\par
+\pard\sa60\fi-360\li360 3.\tab Scan the project and read how each one was classified.\par
+\pard\sa180\fi-360\li360 4.\tab Remove the sample with {\b Window > Asset Audit Sample > Remove} when you are done.\par
+\pard\sa180\sl276\slmult1
+The sample is generated on request rather than shipped, so it never sits in your project unless you ask for it.\par
+
+{\pard\sa120\fs32\b 6. Reading the results\b0\par}
+Every asset lands in exactly one of three sections.\par
+{\b In use.} Something reaches it. These cannot be selected for removal.\par
+{\b Needs review.} It might be dead, but that cannot be proven. The decision is yours.\par
+{\b Unused.} Nothing in the project reaches it. Safe to remove.\par
+The middle section exists because Unity can load an asset without any stored reference to it. {\f1 Resources.Load} takes a string. {\f1 Shader.Find} takes a name. Addressables take an address. Reflection takes a type name. None of those leave a trail a scanner can follow, and a tool that ignores this reports such assets as unused, which is how people delete live content.\par
+Each row states which uncertainty applies to it: a script, which other code can call without any asset referencing it; a shader, which can be found by name at runtime; an asset in an Editor folder, excluded from builds but used while you work; an asset whose name or folder appears in a string literal in your own code; or an asset reachable from a binary asset whose contents could not be read.\par
+Click any path to select that asset in the Project window. Use the search box to narrow all three lists at once, and the button beside it to switch between largest first and alphabetical order.\par
+
+{\pard\sa120\fs32\b 7. Removing assets\b0\par}
+Asset Audit never deletes anything during removal. Selected assets are moved out of {\f1 Assets/} into a timestamped folder beside it, for example {\f1 AssetAuditQuarantine/2026-08-30_16-22-04-951/}. The original folder layout is preserved, the {\f1 .meta} file travels with its asset so the GUID survives, and a manifest records what was moved and what the audit believed at the time.\par
+\pard\sa60\fi-360\li360 1.\tab Tick the assets you want gone, or press {\b Select all unused}.\par
+\pard\sa60\fi-360\li360 2.\tab Check the version control line. On a clean working tree Asset Audit proceeds. Otherwise it asks you to confirm, so that the cleanup can be read as its own change afterwards.\par
+\pard\sa180\fi-360\li360 3.\tab Press {\b Move N to quarantine}. The confirmation lists what will move and what will be left alone.\par
+\pard\sa180\sl276\slmult1
+Removal refuses four things: assets found in use, folders, assets inside packages, and any scene the editor currently has open. An open scene is refused because Unity would write it straight back from memory.\par
+
+{\pard\sa120\fs32\b 8. Restoring a batch\b0\par}
+Every batch is listed with its own {\b Restore} button, not only the most recent one. Restoring moves the files back to their original paths.\par
+If something already occupies one of those paths, that asset stays in quarantine and Asset Audit reports how many it left behind. It never overwrites, because whatever is there now may be work you want.\par
+
+{\pard\sa120\fs32\b 9. Discarding a batch\b0\par}
+{\b Discard} deletes a batch permanently. This is the only action in Asset Audit with no way back, and the only one that actually frees disk space: until a batch is discarded its files are still on your drive, simply outside {\f1 Assets/}.\par
+The window shows how much each batch is holding, so the figure means something before you press the button.\par
+
+{\pard\sa120\fs32\b 10. The ignore list\b0\par}
+Some projects load assets by a convention no scanner can know: a folder read at runtime, a path built from a database, a pipeline of your own.\par
+Create the file {\f1 ProjectSettings/AssetAuditIgnore.txt} and list one path per line. A line covers that asset, and everything beneath it when it names a folder. Lines beginning with # are comments.\par
+\pard\sa180\li360\f1 # Loaded at runtime by our content pipeline\line Assets/RuntimeContent\line\line # Keep the vendor drop exactly as delivered\line Assets/Vendor/AcmeKit\f0\par
+\pard\sa180\sl276\slmult1
+Ignored paths are treated as roots rather than merely skipped, so whatever they reference is protected as well. Sparing a prefab does not leave you with its textures deleted.\par
+The file lives in {\f1 ProjectSettings/} so that version control carries it to your teammates.\par
+
+{\pard\sa120\fs32\b 11. Other findings\b0\par}
+Beyond unused assets, a scan surfaces problems worth knowing about.\par
+{\b Broken references.} Something points at an asset that no longer exists. Each one names the assets still holding the reference.\par
+{\b Dangling addressable entries.} An Addressables group points at a deleted asset. This fails at build time, not during a scan, and the group file is named so you can fix it.\par
+{\b Orphaned meta files.} A {\f1 .meta} file whose asset is gone. These are safe to delete.\par
+{\b Unreadable assets.} Unity stores some assets as binary, among them baked lighting, navmesh and terrain data. Their references cannot be read from the file itself, so anything they might reach is filed under review rather than unused.\par
+
+{\pard\sa120\fs32\b 12. What Asset Audit cannot know\b0\par}
+These limits are stated plainly, because a tool that hides them is worse than a tool that has them.\par
+{\b Assets loaded by a name assembled at runtime.} If your code builds a path from pieces, nothing links the code to the asset. Use the ignore list for those folders.\par
+{\b Sub-assets.} Verdicts are per file. A sprite sheet where one sprite is used counts as in use, whole.\par
+{\b Scenes outside Build Settings.} A scene that is not in the build and not referenced is unused, and so is its baked lighting. That is the correct answer, but check your scene list before acting on it if you keep test scenes around.\par
+
+{\pard\sa120\fs32\b 13. Frequently asked questions\b0\par}
+{\b I put an asset into a scene and it still says unused.}\line Save the scene, then scan again. The audit reads saved files.\par
+{\b It says my lightmaps are unused.}\line Baked lighting follows its scene. If the scene is not in Build Settings and nothing references it, the scene is dead and its baked data with it. Check the scene first.\par
+{\b Moving assets did not free any disk space.}\line Moving is reversible, so the files are still present, in the quarantine folder. Press Discard on a batch to delete it for good.\par
+{\b A batch shows blocked entries and Restore is greyed out.}\line Something already occupies the original paths of everything in that batch, so there is nothing to put back. Usually those assets returned another way.\par
+{\b The review pile is large.}\line Read the reasons. If a whole folder is listed because your code names it, add that folder to the ignore list and it will stop asking.\par
+
+{\pard\sa120\fs32\b 14. Support\b0\par}
+Write to plumlineunity@gmail.com.\par
+Please include your Unity version, whether the project uses Addressables, and the reason text shown under the finding you are asking about. That reason identifies which rule produced the verdict, which is usually enough to answer the question straight away.\par
+}
