@@ -1,0 +1,346 @@
+<title>Plumbline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&family=Zilla+Slab:wght@600;700&display=swap">
+
+<style>
+  :root {
+    --ground: #edeee9;
+    --surface: #f7f8f4;
+    --ink: #15181a;
+    --ink-soft: #4c5457;
+    --rule: #c8ccc3;
+    --accent: #17558c;
+    --brass: #96762f;
+    --shadow: rgba(21, 24, 26, 0.08);
+
+    --step-0: 1rem;
+    --step-1: 1.2rem;
+    --step-2: 1.55rem;
+    --step-3: 2.3rem;
+    --step-4: clamp(3rem, 9vw, 5.5rem);
+
+    --spine: 2px;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #101315;
+      --surface: #171b1e;
+      --ink: #e7eae6;
+      --ink-soft: #98a09e;
+      --rule: #2b3135;
+      --accent: #6cb0e6;
+      --brass: #c6a35a;
+      --shadow: rgba(0, 0, 0, 0.5);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #101315;
+    --surface: #171b1e;
+    --ink: #e7eae6;
+    --ink-soft: #98a09e;
+    --rule: #2b3135;
+    --accent: #6cb0e6;
+    --brass: #c6a35a;
+    --shadow: rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+    position: relative;
+  }
+
+  /* The spine is the plumb line itself: everything on the page hangs off it. */
+  .spine {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 1.5rem;
+    width: var(--spine);
+    background: linear-gradient(to bottom, var(--brass), var(--rule) 40%, transparent);
+    pointer-events: none;
+  }
+
+  .bob {
+    position: absolute;
+    left: calc(1.5rem - 7px);
+    top: 19rem;
+    width: 16px;
+    height: 30px;
+    background: var(--brass);
+    clip-path: polygon(50% 0, 100% 22%, 100% 62%, 50% 100%, 0 62%, 0 22%);
+    transform-origin: 50% -19rem;
+    animation: settle 3.4s cubic-bezier(0.33, 0, 0.2, 1) 1;
+  }
+
+  @keyframes settle {
+    0%   { transform: rotate(3.2deg); }
+    35%  { transform: rotate(-1.8deg); }
+    62%  { transform: rotate(0.9deg); }
+    82%  { transform: rotate(-0.35deg); }
+    100% { transform: rotate(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bob { animation: none; }
+  }
+
+  .content { padding-left: 3.25rem; }
+
+  header { padding: 7rem 0 5.5rem; }
+
+  .wordmark {
+    font-family: "Zilla Slab", Georgia, serif;
+    font-weight: 700;
+    font-size: var(--step-4);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .wordmark span { color: var(--brass); }
+
+  .tagline {
+    font-size: var(--step-2);
+    line-height: 1.35;
+    max-width: 26ch;
+    margin: 1.75rem 0 0;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  .eyebrow {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 1.5rem;
+  }
+
+  section { padding: 3.5rem 0; border-top: 1px solid var(--rule); }
+
+  h2 {
+    font-family: "Zilla Slab", Georgia, serif;
+    font-weight: 600;
+    font-size: var(--step-3);
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p { max-width: 62ch; }
+
+  .product {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 2rem 2rem 1.75rem;
+    box-shadow: 0 1px 2px var(--shadow);
+  }
+
+  .product h3 {
+    font-family: "Zilla Slab", Georgia, serif;
+    font-size: var(--step-2);
+    font-weight: 600;
+    margin: 0 0 0.35rem;
+  }
+
+  .status {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.25rem;
+  }
+
+  .verdicts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 1.75rem 0 0;
+    list-style: none;
+    padding: 0;
+  }
+
+  .verdicts li {
+    background: var(--surface);
+    padding: 1.1rem 1.25rem;
+  }
+
+  .verdicts dt {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .verdicts dd { margin: 0; font-size: 0.95rem; color: var(--ink-soft); line-height: 1.5; }
+
+  .principles { list-style: none; padding: 0; margin: 0; display: grid; gap: 2.25rem; }
+
+  .principles h3 {
+    font-family: "Zilla Slab", Georgia, serif;
+    font-size: var(--step-1);
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+
+  .principles p { margin: 0; color: var(--ink-soft); }
+
+  .rule-number {
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--brass);
+    letter-spacing: 0.1em;
+  }
+
+  footer {
+    padding: 3.5rem 0 0;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  footer p { margin: 0 0 0.65rem; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .placeholder {
+    background: var(--brass);
+    color: var(--ground);
+    padding: 0.05em 0.4em;
+    font-family: "Spline Sans Mono", ui-monospace, monospace;
+    font-size: 0.85em;
+  }
+
+  @media (max-width: 40rem) {
+    .content { padding-left: 2rem; }
+    .bob { top: 15rem; transform-origin: 50% -15rem; }
+    header { padding: 4.5rem 0 3.5rem; }
+  }
+</style>
+
+<div class="page">
+  <div class="spine" aria-hidden="true"></div>
+  <div class="bob" aria-hidden="true"></div>
+
+  <div class="content">
+    <header>
+      <p class="eyebrow">Editor tools for Unity</p>
+      <h1 class="wordmark">Plumb<span>line</span></h1>
+      <p class="tagline">A plumb line does not guess which wall is true. It hangs still and lets you read the answer.</p>
+    </header>
+
+    <section>
+      <h2>What we make</h2>
+
+      <div class="product">
+        <h3>Asset Audit</h3>
+        <p class="status">Coming to the Unity Asset Store</p>
+        <p>
+          Unity projects collect assets nothing points at any more: textures from a pack imported
+          for one prop, audio that got replaced, models from an experiment. They ship with the
+          build and slow down every import. Asset Audit finds them.
+        </p>
+        <p>
+          It will not call an asset dead unless it can prove it. Unity can load an asset from a
+          string — <em>Resources.Load</em>, <em>Shader.Find</em>, an addressable key — leaving no
+          trail to follow. A tool that ignores that reports those assets as unused, and people
+          delete live content. So there are three answers here, not two.
+        </p>
+
+        <ul class="verdicts">
+          <li>
+            <dl>
+              <dt>In use</dt>
+              <dd>Something reaches it. Cannot be selected for removal.</dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>Needs review</dt>
+              <dd>It might be dead, but that cannot be proven. Your call, with the reason shown.</dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>Unused</dt>
+              <dd>Nothing in the project reaches it. Safe to remove.</dd>
+            </dl>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>How we build</h2>
+
+      <ol class="principles">
+        <li>
+          <p class="rule-number">01</p>
+          <h3>Prove it, or say you cannot</h3>
+          <p>
+            An honest maybe is worth more than a confident wrong answer. Where the evidence runs
+            out, the tool says so and hands the decision back, rather than rounding uncertainty
+            down to a delete button.
+          </p>
+        </li>
+        <li>
+          <p class="rule-number">02</p>
+          <h3>Every answer carries its reason</h3>
+          <p>
+            A verdict without a reason asks for faith. Each finding states the rule that produced
+            it, so you can disagree with the tool on the evidence instead of on trust.
+          </p>
+        </li>
+        <li>
+          <p class="rule-number">03</p>
+          <h3>One irreversible step, clearly marked</h3>
+          <p>
+            Removing assets moves them aside with a manifest, so undoing is a move back rather
+            than a recovery. Exactly one action deletes anything for good, and it says so before
+            you take it.
+          </p>
+        </li>
+      </ol>
+    </section>
+
+    <footer>
+      <p>Plumbline is a one-person studio. Built and maintained by Kaan Açar.</p>
+      <p>
+        Contact: <a href="mailto:REPLACE-WITH-YOUR-EMAIL"><span class="placeholder">REPLACE-WITH-YOUR-EMAIL</span></a>
+      </p>
+      <p>
+        Software here is written with the assistance of AI tooling, reviewed and tested by hand
+        before release.
+      </p>
+    </footer>
+  </div>
+</div>
